@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aboreto&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <title>Library Management System</title>
+    <style>
+        *{
+            margin:0px;
+            padding:0px;
+        }
+        body{
+            background-image: url("https://wallpaperaccess.com/full/253337.jpg");
+            background-size: cover;
+            background-attachment: fixed;
+        }
+        h1{
+            margin: 5vh 38vw;
+            padding: 2vh;
+            text-align: center;
+            height: 15vh;
+            background-color: rgb(229, 232, 42);
+            border-radius: .2em;
+            font-family: 'Aboreto', cursive;
+        }
+        #Buttons{
+            text-align: center;
+        }
+        #Buttons input{
+            height: 25vh;
+            width: 20vw;
+            font-size: 2.5em;
+            border-radius: .2em;
+            background-color: rgb(229, 232, 42);
+            font-family: 'Bebas Neue', cursive;
+        }
+        #topBlock{
+            margin-top: 10vh;
+        }
+        #topBlock input{
+            margin-left: 3vw;
+            margin-right: 3vw;
+        }
+        #bottomBlock{
+            margin-top: 8vh;
+        }
+        #bottomBlock input{
+            margin-left: 3vw;
+            margin-right: 3vw;
+        }
+        #Buttons input:hover{
+            background-color:goldenrod ;
+        }
+    </style>
+</head>
+<body>
+    <h1>WELCOME<br>TO YOUR<br>ONLINE LIBRARY!!!</h1>
+    <div id="Buttons">
+        <form action="/" method="POST">
+        <div id="topBlock">
+            <input type="button" onclick="location.href='/clientLogin'" value="Login as client"/>
+            <input type="button" onclick="location.href='/adminLogin'" value="Login as admin"/>
+        </div>
+        <div id="bottomBlock">
+            <input type="button" onclick="location.href='/clientRegister'" value="Register as client"/>
+            <input type="button" onclick="location.href='/adminRegister'" value="Register as admin"/>
+        </div>
+        </form>
+    </div>
+</body>
+</html>

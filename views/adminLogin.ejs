@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aboreto&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <title>Library Management System/Admin Login</title>
+    <style>
+        *{
+            margin: 0px;
+            padding: 0px;
+        }
+        body{
+            background-image: url("/admin.jpg");
+            background-size: cover;
+            background-attachment: fixed;
+        }
+        h1{
+            text-align: center;
+            margin-top: 30vh;
+            font-family: 'Aboreto', cursive;
+        }
+        .entry{
+            margin-top: 10vh ;
+            text-align: center;
+        }
+        #user{
+            margin: 5vh 0vw;
+            height:3.5vh;
+            width: 15vw;
+            border: 2px solid purple;
+            border-radius: .2em;
+        }
+        #pass{
+            height:3.5vh;
+            width: 15vw;
+            border: 2px solid purple;
+            border-radius: .2em;
+        }
+        .entry label{
+            font-size: 2em;
+            font-family: 'Bebas Neue', cursive;          
+        }
+        #button{
+            margin: 5vh;
+            height: 2em;
+            width: 10em;
+            font-family: 'Aboreto', cursive;
+            font-size: large;
+            background-color: white;
+            border: rgb(0, 94, 255) solid 2px;
+        }
+        #button:hover{
+            color: antiquewhite;
+            background-color: rgb(0, 94, 255);
+            border: white solid 2px;
+        }
+    </style>
+</head>
+<body>
+    <h1><u>Enter Admin Details!!!</u></h1>
+    <div class="entry">
+        <form action="" method="POST">
+            <center><table>
+                <tr>
+            <td><label for="user">Username :</label></td>
+            <td><input type="text" id="user"></td>
+                </tr>
+                <tr>
+            <td><label for="pass">Password :</label></td>
+            <td><input type="password" id="pass"></td>
+                </tr>
+        </table></center>
+            <br>
+            <input type="submit" onclick="" id="button">
+        </form>
+    </div>
+</body>
+</html>

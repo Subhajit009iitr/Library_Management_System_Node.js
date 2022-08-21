@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aboreto&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <title>Library Management System/Welcome to Client Page</title>
+    <style>
+        *{
+            padding: 0px;
+            margin: 0px;
+        }
+        body{
+            background-image: url("https://static.vecteezy.com/system/resources/thumbnails/008/058/793/small/abstract-blur-with-bokeh-light-for-background-usage-vector.jpg");
+            background-size: cover;
+            background-attachment: fixed ;
+        }
+        h1,h2{
+            text-align: center;
+            font-family: 'Aboreto', cursive;
+        }
+        #avail{
+            margin: 5vh;
+        }
+        #myBooks{
+            margin: 5vh;
+        }
+        #pend{
+            margin: 5vh;
+        }
+        #logout{
+            height: 2em;
+            width: 6em;
+            font-family: 'Bebas Neue', cursive;
+            font-size: larger;
+            border: purple solid 2px;
+            border-radius: .2em;
+            color: azure;
+            background-color: rgb(19, 91, 208) ;
+            position: fixed;
+        }
+        #logout:hover{
+            color: black;
+            background-color: cyan ;
+            border-color: azure;
+        }
+        .logout{
+            margin: 2vh 10vw;
+            text-align: right;
+           
+        }
+    </style>
+</head>
+<body>
+    <div class="logout">
+    <input type="button" onclick="" value="LOGOUT" id="logout">
+    </div>
+    <h1>Welcome to the Client Page!</h1>
+    <div id="avail">
+    <h2>Available Books:</h2>
+    <center><table>
+        <tr>
+            <td>Half Girlfriend</td>
+        </tr>
+    </table></center>
+    </div>
+    <br>
+    <div id="myBooks">
+        <h2>My Books</h2>
+        <center><table>
+            <tr>
+                <td>Half Girlfriend</td>
+            </tr>
+        </table></center>
+    </div>
+    <br>
+    <div id="pend">
+        <center><h2>Pending requests</h2>
+        <p>Half Girlfriend</p></center>
+    </div>
+</body>
+</html>
