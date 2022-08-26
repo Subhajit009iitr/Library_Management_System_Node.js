@@ -5,7 +5,7 @@ const sessions = require("express-session");
 const db = require('./data');
 const { constants } = require('buffer');  //imports buffer module
 
-const { nextTick } = require('process');
+//const { nextTick } = require('process');
 
 const path = require('path');  //imports path module
 
@@ -61,8 +61,15 @@ router.post('/loginClient',(req,res)=>{
     let crypto=require('crypto');
     let newpd=salti+pwd+saltl;
     const hash=crypto.createHash('sha256').update(newpd).digest('base64');
+    
+    db.query("select * from client where name = " +db.escape(name) + ";",(error,result,field) =>{
     if (error || result[0] === undefined) {
         return res.send('USER NOT REGISTERED.');
     }
+    else{
+        if(result[0] !== undefined && result[0].Password == hash){
 
+        }
+    }
+    });
 });
