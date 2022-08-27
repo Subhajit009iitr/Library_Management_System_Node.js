@@ -77,5 +77,5 @@ router.post("/loginClient",(req,res)=>{
         //}
     }
     });
-    console.log("Ha bhai akhir tak to pauch gaya par bich ka kya")
+    console.log("Reached the end")
 });
