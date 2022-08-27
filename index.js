@@ -2,10 +2,11 @@ const express = require('express');// imports expres modules
  
 const sessions = require("express-session");
 
+require('dotenv').config();
 const db = require('./data');
 const { constants } = require('buffer');  //imports buffer module
 
-//const { nextTick } = require('process');
+const { nextTick } = require('process');
 
 const path = require('path');  //imports path module
 
@@ -53,23 +54,28 @@ router.get('/clientRegister',(req,res)=>{
     res.render('clientRegister')
 });
 
-router.post('/loginClient',(req,res)=>{
+router.post("/loginClient",(req,res)=>{
     let name=req.body.uname;
     let pwd=req.body.pwd;
-    let salti=meow;
-    let saltl=bhau;
-    let crypto=require('crypto');
-    let newpd=salti+pwd+saltl;
-    const hash=crypto.createHash('sha256').update(newpd).digest('base64');
-    
-    db.query("select * from client where name = " +db.escape(name) + ";",(error,result,field) =>{
+    //let salti=meow;
+    //let saltl=bhau;
+    //let crypto=require('crypto');
+    //let newpd=salti+pwd+saltl;
+    //const hash=crypto.createHash('sha256').update(newpd).digest('base64');
+    console.log("1st phase working fine");
+    console.log("SELECT * FROM client WHERE Username="+db.escape(name)+";")
+    db.query(`SELECT * FROM client WHERE Username=${db.escape(name)};`,(error,result,field) => {
+        console.log('hmm got entry inside db query');
     if (error || result[0] === undefined) {
+        console.log("No Data sorry!");
         return res.send('USER NOT REGISTERED.');
     }
     else{
-        if(result[0] !== undefined && result[0].Password == hash){
-
-        }
+        //if(result[0] !== undefined && result[0].Password == hash){
+            console.log(result);
+            res.send("Oh yeah Successful!!!");
+        //}
     }
     });
+    console.log("Ha bhai akhir tak to pauch gaya par bich ka kya")
 });
