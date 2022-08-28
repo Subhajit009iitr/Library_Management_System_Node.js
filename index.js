@@ -2,13 +2,16 @@ const express = require('express');// imports expres modules
  
 const sessions = require("express-session");
 
-require('dotenv').config();
+require('dotenv').config(); //connects to .env file to fetch sensitive data
+
 const db = require('./data');
 const { constants } = require('buffer');  //imports buffer module
 
 const { nextTick } = require('process');
 
 const path = require('path');  //imports path module
+
+const crypto=require('crypto');
 
 const app=express();
 
@@ -40,7 +43,7 @@ router.get('/adminLogin',(req,res)=>{
 
 router.get('/clientLogin',(req,res)=>{
     console.log('Client Login Page Activated!');
-    //res.send('finally got it😁')
+    //res.send('finally got it😁') //To Check whether connections are working and are ready for rendering
     res.render('clientLogin')
 });
 
@@ -55,27 +58,43 @@ router.get('/clientRegister',(req,res)=>{
 });
 
 router.post("/loginClient",(req,res)=>{
-    let name=req.body.uname;
+    let uname=req.body.uname;
     let pwd=req.body.pwd;
-    //let salti=meow;
-    //let saltl=bhau;
-    //let crypto=require('crypto');
-    //let newpd=salti+pwd+saltl;
-    //const hash=crypto.createHash('sha256').update(newpd).digest('base64');
-    console.log("1st phase working fine");
-    console.log("SELECT * FROM client WHERE Username="+db.escape(name)+";")
-    db.query(`SELECT * FROM client WHERE Username=${db.escape(name)};`,(error,result,field) => {
-        console.log('hmm got entry inside db query');
+    db.query(`SELECT * FROM users WHERE name=${db.escape(uname)} and role='client';`,(error,result,field) => {
+        let newpd=pwd+result[0].salt;
+        const hash=crypto.createHash('sha256').update(newpd).digest('base64');
     if (error || result[0] === undefined) {
-        console.log("No Data sorry!");
-        return res.send('USER NOT REGISTERED.');
+        res.send('USER NOT REGISTERED.');
     }
     else{
-        //if(result[0] !== undefined && result[0].Password == hash){
-            console.log(result);
+        if(result[0] !== undefined && result[0].hash == hash){
             res.send("Oh yeah Successful!!!");
-        //}
+        }
+        else{
+            res.send("Wrong Password!!!");
+        }
     }
     });
-    console.log("Reached the end")
+});
+
+
+
+router.post("/loginAdmin",(req,res)=>{
+    let uname=req.body.uname;
+    let pwd=req.body.pwd;
+    db.query(`SELECT * FROM users WHERE name=${db.escape(uname)} and role='admin';`,(error,result,field) => {
+        let newpd=pwd+result[0].salt;
+        const adhash=crypto.createHash('sha256').update(newpd).digest('base64');
+    if (error || result[0] === undefined) {
+        res.send('USER NOT REGISTERED.');
+    }
+    else{
+        if(result[0] !== undefined && result[0].hash == adhash){
+            res.send("Oh yeah Successful!!!");
+        }
+        else{
+            res.send("Wrong Password!!!");
+        }
+    }
+    });
 });
