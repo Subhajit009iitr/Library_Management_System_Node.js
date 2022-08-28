@@ -43,7 +43,7 @@ router.get('/adminLogin',(req,res)=>{
 
 router.get('/clientLogin',(req,res)=>{
     console.log('Client Login Page Activated!');
-    //res.send('finally got it😁') //To Check whether connections are working and are ready for rendering
+    //res.send('finally got it😁') //To Check whether connections are working and page is ready for rendering
     res.render('clientLogin')
 });
 
@@ -68,7 +68,8 @@ router.post("/loginClient",(req,res)=>{
     }
     else{
         if(result[0] !== undefined && result[0].hash == hash){
-            res.send("Oh yeah Successful!!!");
+            //res.send("Oh yeah Successful!!!");
+            res.render('clientPage')
         }
         else{
             res.send("Wrong Password!!!");
@@ -76,8 +77,6 @@ router.post("/loginClient",(req,res)=>{
     }
     });
 });
-
-
 
 router.post("/loginAdmin",(req,res)=>{
     let uname=req.body.uname;
@@ -90,7 +89,8 @@ router.post("/loginAdmin",(req,res)=>{
     }
     else{
         if(result[0] !== undefined && result[0].hash == adhash){
-            res.send("Oh yeah Successful!!!");
+            //res.send("Oh yeah Successful!!!");
+            res.render('adminPage');
         }
         else{
             res.send("Wrong Password!!!");
