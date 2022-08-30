@@ -82,20 +82,28 @@ router.post("/loginAdmin",(req,res)=>{
     let uname=req.body.uname;
     let pwd=req.body.pwd;
     db.query(`SELECT * FROM users WHERE name=${db.escape(uname)} and role='admin';`,(error,result,field) => {
-        let newpd=pwd+result[0].salt;
-        const adhash=crypto.createHash('sha256').update(newpd).digest('base64');
-    if (error || result[0] === undefined) {
-        res.send('USER NOT REGISTERED.');
-    }
-    else{
-        if(result[0] !== undefined && result[0].hash == adhash){
-            //res.send("Oh yeah Successful!!!");
-            res.render('adminPage');
+        if(result[0].perm==0){
+            res.send("Your Account has not yet been verified by The Main Admin yet!!!");
+        }
+        else if(result[0].perm==2){
+            res.send("Your request for the Admin Account has been rejected by the ADMIN!!!");
         }
         else{
-            res.send("Wrong Password!!!");
-        }
-    }
+            let newpd=pwd+result[0].salt;
+            const adhash=crypto.createHash('sha256').update(newpd).digest('base64');
+                if (error || result[0] === undefined) {
+                    res.send('USER NOT REGISTERED.');
+                }
+                else{
+                    if(result[0] !== undefined && result[0].hash == adhash){
+                        //res.send("Oh yeah Successful!!!");
+                        res.render('adminPage');
+                    }
+                    else{
+                        res.send("Wrong Password!!!");
+                    }
+                }
+            }
     });
 });
 
@@ -119,7 +127,7 @@ router.post("/clRegister",(req,res)=>{
                 let Salt=makeSalt(8);
                 let newpass=pass+Salt;
                 const crhash=crypto.createHash('sha256').update(newpass).digest('base64');
-                db.query(`INSERT INTO users(name,hash,salt,role) VALUES('${uname}','${crhash}','${Salt}','client');`);
+                db.query(`INSERT INTO users(name,hash,salt,role,perm) VALUES('${uname}','${crhash}','${Salt}','client',0);`);
                 db.query(`SELECT * FROM users WHERE name=${db.escape(uname)} AND role='client;'`,(error,result,field) =>{
                     if(error){
                         res.send("Some error occured please try again!!!");
@@ -145,13 +153,13 @@ router.post("/adRegister",(req,res)=>{
     let uname=req.body.uname;
     let pass=req.body.pwd;
     let conpass=req.body.conpwd;
-    db.query(`SELECT * FROM users WHERE name=${db.escape(uname)} AND role='client;'`,(error,result,field) =>{
+    db.query(`SELECT * FROM users WHERE name=${db.escape(uname)} AND role='admin;'`,(error,result,field) =>{
         if(result[0]==undefined&&pass === conpass){
             if(pass.length>4){
                 let Salt=makeSalt(8);
                 let newpass=pass+Salt;
                 const arhash=crypto.createHash('sha256').update(newpass).digest('base64');
-                db.query(`INSERT INTO users(name,hash,salt,role) VALUES('${uname}','${arhash}','${Salt}','admin');`);
+                db.query(`INSERT INTO users(name,hash,salt,role,perm) VALUES('${uname}','${arhash}','${Salt}','admin',0);`);
                 db.query(`SELECT * FROM users WHERE name=${db.escape(uname)} AND role='admin';`,(error,result,field) =>{
                     if(error){
                         res.send("Some error occured please try again!!!");
