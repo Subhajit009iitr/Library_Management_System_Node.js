@@ -10,14 +10,12 @@ const { constants } = require('buffer');  //imports buffer module
 const { nextTick } = require('process');
 
 const path = require('path');  //imports path module
-
-const crypto=require('crypto');
-
+const crypto=require('crypto'); //imports crypto module for hashing
 const app=express();
 
 db.connect();
 
-app.set('view engine', 'ejs');
+app.set('view engine', 'ejs'); // set the view engine to ejs
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -38,7 +36,7 @@ router.get('/',(req,res)=>{
 
 router.get('/adminLogin',(req,res)=>{
     console.log('Admin Login Page Activated!');
-    res.render('adminLogin')
+    res.render('adminLogin', {msg:""})
 });
 
 router.get('/clientLogin',(req,res)=>{
@@ -83,16 +81,18 @@ router.post("/loginAdmin",(req,res)=>{
     let pwd=req.body.pwd;
     db.query(`SELECT * FROM users WHERE name=${db.escape(uname)} and role='admin';`,(error,result,field) => {
         if(result[0].perm==0){
-            res.send("Your Account has not yet been verified by The Main Admin yet!!!");
+            res.render('adminLogin', {msg:"Your Account has not yet been verified by The Main Admin!!!"});
         }
         else if(result[0].perm==2){
-            res.send("Your request for the Admin Account has been rejected by the ADMIN!!!");
+            //res.send("Your request for the Admin Account has been rejected by the ADMIN!!!");
+            res.render('adminLogin', {msg:"Your request for the Admin Account has been rejected by the ADMIN!!!"});
         }
         else{
             let newpd=pwd+result[0].salt;
             const adhash=crypto.createHash('sha256').update(newpd).digest('base64');
                 if (error || result[0] === undefined) {
-                    res.send('USER NOT REGISTERED.');
+                    //res.send('USER NOT REGISTERED.');
+                    res.render('adminLogin',{msg:"USER NOT REGISTERED!!!"});
                 }
                 else{
                     if(result[0] !== undefined && result[0].hash == adhash){
@@ -100,7 +100,8 @@ router.post("/loginAdmin",(req,res)=>{
                         res.render('adminPage');
                     }
                     else{
-                        res.send("Wrong Password!!!");
+                        //res.send("Wrong Password!!!");
+                        res.render('adminLogin',{msg:"Wrong Password!!!"});
                     }
                 }
             }
@@ -166,7 +167,7 @@ router.post("/adRegister",(req,res)=>{
                     }
                     else{ 
                         console.log('Successfully Registered!!!---Now Login');
-                        res.render('adminLogin');
+                        res.render('adminLogin', {msg:""});
                     }
                 });
             }
@@ -180,3 +181,4 @@ router.post("/adRegister",(req,res)=>{
 
     });
 });
+
