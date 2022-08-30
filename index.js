@@ -36,41 +36,44 @@ router.get('/',(req,res)=>{
 
 router.get('/adminLogin',(req,res)=>{
     console.log('Admin Login Page Activated!');
-    res.render('adminLogin', {msg:""})
+    res.render('adminLogin', {msg:''})
 });
 
 router.get('/clientLogin',(req,res)=>{
     console.log('Client Login Page Activated!');
     //res.send('finally got it😁') //To Check whether connections are working and page is ready for rendering
-    res.render('clientLogin')
+    res.render('clientLogin',{msg:''})
 });
 
 router.get('/adminRegister',(req,res)=>{
     console.log('Admin Register Page Activated!');
-    res.render('adminRegister')
+    res.render('adminRegister', {msg:''})
 });
 
 router.get('/clientRegister',(req,res)=>{
     console.log('Client Register Page Activated!');
-    res.render('clientRegister')
+    res.render('clientRegister', {msg:''})
 });
 
 router.post("/loginClient",(req,res)=>{
     let uname=req.body.uname;
     let pwd=req.body.pwd;
     db.query(`SELECT * FROM users WHERE name=${db.escape(uname)} and role='client';`,(error,result,field) => {
-        let newpd=pwd+result[0].salt;
-        const hash=crypto.createHash('sha256').update(newpd).digest('base64');
+        
     if (error || result[0] === undefined) {
-        res.send('USER NOT REGISTERED.');
+        //res.send('USER NOT REGISTERED.');
+        res.render('clientLogin',{msg:"USER NOT REGISTERED!!!"});
     }
     else{
+        let newpd=pwd+result[0].salt;
+        const hash=crypto.createHash('sha256').update(newpd).digest('base64');
         if(result[0] !== undefined && result[0].hash == hash){
             //res.send("Oh yeah Successful!!!");
-            res.render('clientPage')
+            res.render('clientPage');
         }
         else{
-            res.send("Wrong Password!!!");
+            //res.send("Wrong Password!!!");
+            res.render('clientLogin',{msg:"Wrong Password!!!"});
         }
     }
     });
@@ -88,13 +91,14 @@ router.post("/loginAdmin",(req,res)=>{
             res.render('adminLogin', {msg:"Your request for the Admin Account has been rejected by the ADMIN!!!"});
         }
         else{
-            let newpd=pwd+result[0].salt;
-            const adhash=crypto.createHash('sha256').update(newpd).digest('base64');
+            
                 if (error || result[0] === undefined) {
                     //res.send('USER NOT REGISTERED.');
                     res.render('adminLogin',{msg:"USER NOT REGISTERED!!!"});
                 }
                 else{
+                    let newpd=pwd+result[0].salt;
+                    const adhash=crypto.createHash('sha256').update(newpd).digest('base64');
                     if(result[0] !== undefined && result[0].hash == adhash){
                         //res.send("Oh yeah Successful!!!");
                         res.render('adminPage');
@@ -135,16 +139,18 @@ router.post("/clRegister",(req,res)=>{
                     }
                     else{ 
                         console.log('Successfully Registered!!!---Now Login');
-                        res.render('clientLogin');
+                        res.render('clientLogin',{msg:''});
                     }
                 });
             }
             else{
-                res.send("Minimum Password length is 4- Please Retry!!!");
+                //res.send("Minimum Password length is 4- Please Retry!!!");
+                res.render('clientRegister',{msg:"Minimum Password length is 4- Please Retry!!!"});
             }
         }
         else{
-            res.send("UserName alreday exists!! TRY SOMETHING ELSE !!");
+            //res.send("UserName alreday exists!! TRY SOMETHING ELSE !!!");
+            res.render('clientRegister',{msg:"UserName alreday exists!! TRY SOMETHING ELSE !!!"});
         }
 
     });
@@ -167,16 +173,18 @@ router.post("/adRegister",(req,res)=>{
                     }
                     else{ 
                         console.log('Successfully Registered!!!---Now Login');
-                        res.render('adminLogin', {msg:""});
+                        res.render('adminLogin', {msg:''});
                     }
                 });
             }
             else{
-                res.send("Minimum Password length is 4- Please Retry!!!");
+                //res.send("Minimum Password length is 4- Please Retry!!!");
+                res.render('clientRegister',{msg:"Minimum Password length is 4- Please Retry!!!"});
             }
         }
         else{
-            res.send("UserName alreday exists!! TRY SOMETHING ELSE !!");
+            //res.send("UserName alreday exists!! TRY SOMETHING ELSE !!");
+            res.render('clientRegister',{msg:"UserName alreday exists!! TRY SOMETHING ELSE !!!"});
         }
 
     });
