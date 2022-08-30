@@ -102,9 +102,9 @@ router.post("/loginAdmin",(req,res)=>{
 function makeSalt(length){
     let result = '';
     let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let charactersLength = characters.length;
+    let charLength = characters.length;
     for (let i=0;i<length;i++){
-      result += characters.charAt(Math.floor(Math.random()*charactersLength));
+      result += characters.charAt(Math.floor(Math.random()*charLength));
     }
    return result;
 }
@@ -127,6 +127,38 @@ router.post("/clRegister",(req,res)=>{
                     else{ 
                         console.log('Successfully Registered!!!---Now Login');
                         res.render('clientLogin');
+                    }
+                });
+            }
+            else{
+                res.send("Minimum Password length is 4- Please Retry!!!");
+            }
+        }
+        else{
+            res.send("UserName alreday exists!! TRY SOMETHING ELSE !!");
+        }
+
+    });
+});
+
+router.post("/adRegister",(req,res)=>{
+    let uname=req.body.uname;
+    let pass=req.body.pwd;
+    let conpass=req.body.conpwd;
+    db.query(`SELECT * FROM users WHERE name=${db.escape(uname)} AND role='client;'`,(error,result,field) =>{
+        if(result[0]==undefined&&pass === conpass){
+            if(pass.length>4){
+                let Salt=makeSalt(8);
+                let newpass=pass+Salt;
+                const arhash=crypto.createHash('sha256').update(newpass).digest('base64');
+                db.query(`INSERT INTO users(name,hash,salt,role) VALUES('${uname}','${arhash}','${Salt}','admin');`);
+                db.query(`SELECT * FROM users WHERE name=${db.escape(uname)} AND role='admin';`,(error,result,field) =>{
+                    if(error){
+                        res.send("Some error occured please try again!!!");
+                    }
+                    else{ 
+                        console.log('Successfully Registered!!!---Now Login');
+                        res.render('adminLogin');
                     }
                 });
             }
