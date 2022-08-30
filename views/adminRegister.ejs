@@ -69,23 +69,23 @@
 <body>
     <h1><u>Enter your Info to register as an Admin!!!</u></h1>
     <div class="entry">
-        <form action="" method="POST">
+        <form action="/adRegister" method="POST">
             <center><table>
                 <tr>
             <td><label for="user">Username :</label></td>
-            <td><input type="text" id="user"></td>
+            <td><input type="text" name="uname" id="user"></td>
                 </tr>
                 <tr>
             <td><label for="pass">Password :</label></td>
-            <td><input type="password" id="pass"></td>
+            <td><input type="password" name="pwd" id="pass"></td>
                 </tr>
                 <tr>
             <td><label for="conpass">Confirm Password :</label></td>
-            <td><input type="password" id="conpass"></td>
+            <td><input type="password" name="conpwd" id="conpass"></td>
                 </tr>
         </table></center>
         <br>
-            <input type="submit" onclick="" id="button">
+            <input type="submit"  id="button">
         </form>
     </div>
 </body>
