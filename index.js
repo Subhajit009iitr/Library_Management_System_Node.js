@@ -198,3 +198,7 @@ router.post("/adRegister",(req,res)=>{
         }
     });
 });
+
+router.post("/",(req,res)=>{
+    res.render('index');
+});
