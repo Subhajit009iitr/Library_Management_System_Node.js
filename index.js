@@ -123,29 +123,34 @@ function makeSalt(length){
 }
 
 router.post("/clRegister",(req,res)=>{
-    let uname=req.body.uname;
+    let usname=req.body.uname;
     let pass=req.body.pwd;
     let conpass=req.body.conpwd;
-    db.query(`SELECT * FROM users WHERE name=${db.escape(uname)} AND role='client;'`,(error,result,field) =>{
-        if(result[0]==undefined&&pass === conpass){
-            if(pass.length>4){
-                let Salt=makeSalt(8);
-                let newpass=pass+Salt;
-                const crhash=crypto.createHash('sha256').update(newpass).digest('base64');
-                db.query(`INSERT INTO users(name,hash,salt,role,perm) VALUES('${uname}','${crhash}','${Salt}','client',0);`);
-                db.query(`SELECT * FROM users WHERE name=${db.escape(uname)} AND role='client;'`,(error,result,field) =>{
-                    if(error){
-                        res.send("Some error occured please try again!!!");
-                    }
-                    else{ 
-                        console.log('Successfully Registered!!!---Now Login');
-                        res.render('clientLogin',{msg:''});
-                    }
-                });
+    db.query(`SELECT * FROM users WHERE name=${db.escape(usname)} and role='client';`,(error,result,field) => {
+        if(result[0] === undefined){
+            if(pass==conpass){
+                if(pass.length>4){
+                    let Salt=makeSalt(8);
+                    let newpass=pass+Salt;
+                    const crhash=crypto.createHash('sha256').update(newpass).digest('base64');
+                    db.query(`INSERT INTO users(name,hash,salt,role,perm) VALUES('${usname}','${crhash}','${Salt}','client',0);`);
+                    db.query(`SELECT * FROM users WHERE name=${db.escape(usname)} AND role='client;'`,(error,result,field) =>{
+                        if(error){
+                            res.send("Some error occured please try again!!!");
+                        }
+                        else{ 
+                            console.log('Successfully Registered!!!---Now Login');
+                            res.render('clientLogin',{msg:''});
+                        }
+                    });
+                }
+                else{
+                    //res.send("Minimum Password length is 4- Please Retry!!!");
+                    res.render('clientRegister',{msg:"Minimum Password length is 5- Please Retry!!!"});
+                }
             }
             else{
-                //res.send("Minimum Password length is 4- Please Retry!!!");
-                res.render('clientRegister',{msg:"Minimum Password length is 4- Please Retry!!!"});
+                res.render('clientRegister',{msg:"Passwords don't Match- Please Retry!!!"});
             }
         }
         else{
@@ -160,33 +165,36 @@ router.post("/adRegister",(req,res)=>{
     let uname=req.body.uname;
     let pass=req.body.pwd;
     let conpass=req.body.conpwd;
-    db.query(`SELECT * FROM users WHERE name=${db.escape(uname)} AND role='admin;'`,(error,result,field) =>{
-        if(result[0]==undefined&&pass === conpass){
-            if(pass.length>4){
-                let Salt=makeSalt(8);
-                let newpass=pass+Salt;
-                const arhash=crypto.createHash('sha256').update(newpass).digest('base64');
-                db.query(`INSERT INTO users(name,hash,salt,role,perm) VALUES('${uname}','${arhash}','${Salt}','admin',0);`);
-                db.query(`SELECT * FROM users WHERE name=${db.escape(uname)} AND role='admin';`,(error,result,field) =>{
-                    if(error){
-                        res.send("Some error occured please try again!!!");
-                    }
-                    else{ 
-                        console.log('Successfully Registered!!!---Now Login');
-                        res.render('adminLogin', {msg:''});
-                    }
-                });
+    db.query(`SELECT * FROM users WHERE name=${db.escape(uname)} and role='admin';`,(error,result,field) => {
+        if(result[0]==undefined){
+            if(pass==conpass){
+                if(pass.length>4){
+                    let Salt=makeSalt(8);
+                    let newpass=pass+Salt;
+                    const arhash=crypto.createHash('sha256').update(newpass).digest('base64');
+                    db.query(`INSERT INTO users(name,hash,salt,role,perm) VALUES('${uname}','${arhash}','${Salt}','admin',0);`);
+                    db.query(`SELECT * FROM users WHERE name=${db.escape(uname)} AND role='admin';`,(error,result,field) =>{
+                        if(error){
+                            res.send("Some error occured please try again!!!");
+                        }
+                        else{ 
+                            console.log('Successfully Registered!!!---Now Login');
+                            res.render('adminLogin', {msg:''});
+                        }
+                    });
+                }
+                else{
+                    //res.send("Minimum Password length is 4- Please Retry!!!");
+                    res.render('adminRegister',{msg:"Minimum Password length is 5- Please Retry!!!"});
+                }
             }
             else{
-                //res.send("Minimum Password length is 4- Please Retry!!!");
-                res.render('clientRegister',{msg:"Minimum Password length is 4- Please Retry!!!"});
+            res.render('adminRegister',{msg:"Passwords don't Match- Please Retry!!!"});
             }
         }
         else{
             //res.send("UserName alreday exists!! TRY SOMETHING ELSE !!");
-            res.render('clientRegister',{msg:"UserName alreday exists!! TRY SOMETHING ELSE !!!"});
+            res.render('adminRegister',{msg:"UserName alreday exists!! TRY SOMETHING ELSE !!!"});
         }
-
     });
 });
-
