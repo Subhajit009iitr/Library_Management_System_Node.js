@@ -20,6 +20,7 @@ app.set('view engine', 'ejs'); // set the view engine to ejs
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'images')));  //adds path to external folder('images' in this case)
+app.use(express.static(path.join(__dirname, 'static')));
 const PORT = process.env.PORT || 5000;   //either uses given port or 5000
 
 const router = express.Router();
@@ -200,5 +201,6 @@ router.post("/adRegister",(req,res)=>{
 });
 
 router.post("/",(req,res)=>{
-    res.render('index');
+    res.render('index'); //LOGOUT Function
 });
+
